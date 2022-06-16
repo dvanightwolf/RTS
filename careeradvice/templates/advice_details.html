@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        html, body {
+      min-height: 100%;
+      }
+
+      body, div, form {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 22px;
+      }
+      h1, h4 {
+      margin: 15px 0 4px;
+      }
+      h1 {
+      font-weight: 400;
+      }
+
+      form {
+      text-align: left;
+      width: 50%;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 2px 5px #ccc;
+      }
+      input {
+      width: calc(50% - 10px);
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      vertical-align: middle;
+      }
+      input:hover {
+      border: 1px solid #1c87c9;
+      }
+      table {
+      width: 100%;
+      }
+      h4 {
+      padding: 15px 0 5px;
+      }
+      .question-answer label {
+      display: inline-block;
+      padding: 0 20px 15px 0;
+      }
+      .question-answer input {
+      width: auto;
+      }
+      textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+    }
+      th, td {
+          width: 17%;
+          padding: 15px 0;
+          text-align: center;
+          vertical-align: unset;
+          line-height: 18px;
+          font-weight: 400;
+          word-break: break-all;
+          border-bottom: 1px solid #095484;
+          color: #095484;
+      }
+      p{
+          font-size: large ;
+          text-align: center;
+          margin-bottom: 0;
+      }
+      center{
+          padding: 50px;
+      }
+      h {
+          color: darkcyan;
+      }
+      div.card{
+          padding: 5px;
+          width: 800px;
+          text-align: left;
+      }
+
+
+
+
+
+      button {
+      width: 150px;
+      padding: 10px;
+      border: 2px solid #0666a3;
+      text-align: center;
+      border-radius: 5px;
+      background-color: transparent;
+      font-size: 16px;
+      color: #0666a3;
+      cursor: pointer;
+      }
+      button:hover {
+          color: white;
+      background-color: #0666a3;
+      }
+    label
+    {
+        color: darkcyan;
+    }
+    </style>
+    <meta charset="UTF-8">
+    <title>{{ advice.heading }}</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+<center>
+<div  class="card shadow-lg">
+<h>Advice: </h>
+<p>{{advice.heading }}</p>
+<hr style="margin-bottom: 0">
+<h style="margin-bottom:-5px "> Advice Supject: </h>
+<p>{{advice.text}}</p>
+<hr>
+<p style="font-size: medium ;padding-bottom: 10px ">
+    <h style="padding-left: 10px;" > Category: </h> {{ advice.category }}
+    {% for tag in advice.tags.all %}
+        <h style="padding-left: 10px;"> Tags: </h>{{ tag.name }}
+    {% endfor %}
+<h style="padding-left: 10px;"> Create Date: </h>{{advice.created}}
+<h style="padding-left: 10px;"> Last Edit: </h>{{advice.updated}}
+</p>
+{% if same_user %}
+    <p style="padding: 10px">
+<a href="{{ advice.delete_url }}"><button>delete</button></a>
+<a href="{{ advice.edit_url }}"><button>edit</button></a>
+    </p>
+{% endif %}
+</div>
+</center>
+</body>
+</html>
+{% endblock content %}

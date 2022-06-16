@@ -1,0 +1,92 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+    <html lang="en">
+    <head>
+        <title>Apply details</title>
+        <link href="bootstrap.css">
+        <style>
+            .box{
+                border: 4px solid #000000;
+                margin: 0 auto;
+                }
+            h3{
+                color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <br>
+    <br>
+    <br>
+                <div class="card container shadow-lg" style="align-self: center; border-radius: 2%; margin-bottom: 35px" >
+                <div class="row" style="padding: 20px; border-radius: 2%">
+                <div class="col-lg-6 col-md-6 col-sm-6 kill left">
+                    <br>
+
+                    <div style="margin-top:-15px ">
+                         <a href="{{ cv.picture.url }}" >
+                             <img src="{{ cv.picture.url }}" height="180px" width="180px" style="border-radius: 2%">
+                         </a>
+                    </div>
+
+                        <br>
+                        <h1>{{ cv.first_name }} {{ cv.last_name }}</h1>
+                        <br>
+
+                        <h3 style="color: red">EMAIL</h3>
+                        <div class="text default" style="display: inline-block">
+                        <a href="http://{{ cv.email }}" ><p style="font-size: larger">{{ cv.email }}</p></a>
+                        </div >
+                        <br>
+                        <h6 style="color: red">Gender: {{ cv.gender }}</h6>
+                        <br>
+
+                        <h3 style="color: red">EXPERIENCES</h3>
+                        {% for ex in experiences %}
+                            <p>{{ ex.experience }}: <p style="color: #ff0000">{{ ex.start }} to {{ ex.end }}</p></p>
+
+                        {% endfor %}
+                        <br>
+                        <h3 style="color: red">EDUCATION</h3>
+                        {% for ed in educations %}
+                            <h6>{{ed.education}}: {{ ed.date }}</h6>
+                        {% endfor %}
+                        <br>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 kill right" style="border-left:0.5px solid red;">
+                        <h3 style="color: red">Skill</h3>
+                        {% for sk in skills %}
+                            <h6>{{ sk.skill }} : {{ sk.grade }}</h6>
+                        {% endfor %}
+                        <br>
+
+                        <h4 style="color: red">locations</h4>
+                        {% for l in locations %}
+                            <h6>{{ l.country }}</h6>
+                        {% endfor %}
+                        <br>
+                        <h3 style="color: #ff0000">Interests</h3>
+                        <p>{{ cv.interests }}</p>
+
+                <br>
+                <h3 style="color: red">Note</h3>
+                <h6>{{ apply.note }}</h6>
+                        <hr>
+                            <p style="color: red">Phone Numbers</p>
+                        {% for phone in phone_numbers %}
+                            <p>{{ phone.phone_number }}</p>
+                        {% endfor %}
+                        <hr>
+                        <h7>Created in {{ cv.created }}</h7>
+                <br>
+                        {% if cv.updated != cv.created %}
+                            <h7 style="color: #007f00">Updated in {{ cv.updated }} </h7>
+                        {% endif %}
+
+                <br>
+                </div>
+                </div>
+                </div>
+</body>
+</html>
+{% endblock content %}

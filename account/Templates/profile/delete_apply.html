@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete apply</title>
+</head>
+<body>
+<br>
+<br>
+<br>
+<form method="POST" class="card box container shadow-lg col-lg-4">
+    {% csrf_token %}
+    <br>
+    <h5>Are you sure?</h5>
+    <br>
+    <p><input class="btn btn-outline-primary wew" type="submit" value='Yes'/>
+        <a href="{% url 'account:profile' %}"><input class="btn btn-outline-primary wew" type="button" value="Cancel"></a></p>
+</form>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+    <title>Edit job</title>
+    <style>
+        html, body {
+      min-height: 100%;
+      }
+      body, div, form {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 22px;
+      }
+      h1, h4 {
+      margin: 15px 0 4px;
+      }
+      h1 {
+      font-weight: 400;
+      }
+
+      form {
+          border-radius: 50px;
+      text-align: left;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 2px 5px #ccc;
+      }
+      input {
+      width: calc(50% - 10px);
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      vertical-align: middle;
+      }
+      input:hover {
+      border: 1px solid #1c87c9;
+      }
+      table {
+      width: 100%;
+      }
+      h4 {
+      padding: 15px 0 5px;
+      }
+      .question-answer label {
+      display: inline-block;
+      padding: 0 20px 15px 0;
+      }
+      .question-answer input {
+      width: auto;
+      }
+      textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+    }
+      th, td {
+      width: 17%;
+      padding: 15px 0;
+      text-align: center;
+      vertical-align: unset;
+      line-height: 18px;
+      font-weight: 400;
+      word-break: break-all;
+      border-bottom: 1px solid #095484;
+      color: #095484;
+      }
+
+
+
+      button {
+      width: 150px;
+      padding: 10px;
+      border: none;
+      text-align: center;
+      border-radius: 5px;
+      background-color: #095484;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      }
+      button:hover {
+      background-color: #0666a3;
+      }
+    label
+    {
+        color: darkcyan;
+    }
+    </style>
+
+
+</head>
+    <body>
+        <br>
+    <br>
+    <br>
+    <center>
+       <form id="form-container" method="POST" enctype="multipart/form-data">
+           {% csrf_token %}
+           <h3>editing..</h3>
+           {{ job_form.as_p }}
+           <hr>
+           <h3>Required Experiences</h3>
+           {{experience_formset.management_form }}
+           {% for form in experience_formset %}
+           <div class="experience-form">
+               {{ form.as_p }}
+           </div>
+           {% endfor %}
+       <button id="add-experience-form" type="button">add experience</button>
+       <hr>
+       <h3>Required Educations</h3>
+       {{ education_formset.management_form }}
+       {% for form in education_formset %}
+       <div class="education-form">
+           {{ form.as_p }}
+       </div>
+       {% endfor %}
+       <button id="add-education-form" type="button">add eduction</button>
+       <hr>
+       <h3>Required Skills</h3>
+       {{ skill_formset.management_form }}
+       {% for form in skill_formset %}
+       <div class="skill-form">
+           {{ form.as_p }}
+       </div>
+       {% endfor %}
+       <button id="add-skill-form" type="button">add skill</button>
+       <hr>
+       <h3>job Locations</h3>
+       {{ locations_formset.management_form }}
+       {% for form in locations_formset %}
+       <div class="location-form">
+           {{ form.as_table}}
+       </div>
+       {% endfor %}
+       <button id="add-location-form" type="button">add location</button>
+       <hr>
+       <h3>phone numbers</h3>
+       {{ phone_number_formset.management_form }}
+       {% for form in phone_number_formset %}
+       <div class="phone-number-form">
+           {{ form.as_p}}
+       </div>
+       {% endfor %}
+       <button id="add-form" type="button">add phone number</button>
+       <a href="{% url 'jobs:post_list' %}"><button type="submit">submit</button></a>
+       </form>
+    <br><br><br>
+    <script>
+            let experienceForm = document.querySelectorAll(".experience-form")
+            let container = document.querySelector("#form-container")
+            let experienceAddButton = document.querySelector("#add-experience-form")
+            let totalExperienceForms = document.querySelector("#id_experience-TOTAL_FORMS")
+            let experienceFormNum = experienceForm.length-1
+            experienceAddButton.addEventListener('click', addExperienceForm)
+
+
+
+            let educationForm = document.querySelectorAll(".education-form")
+            let educationAddButton = document.querySelector("#add-education-form")
+            let totalEducationForms = document.querySelector("#id_education-TOTAL_FORMS")
+            let educationFormNum = educationForm.length-1
+            educationAddButton.addEventListener('click', addEducationForm)
+
+            let skillForm = document.querySelectorAll(".skill-form")
+            let skillAddButton = document.querySelector("#add-skill-form")
+            let totalSkillForms = document.querySelector("#id_skill-TOTAL_FORMS")
+            let skillFormNum = skillForm.length-1
+            skillAddButton.addEventListener('click', addSkillForm)
+
+            let PhoneNumberForm = document.querySelectorAll(".phone-number-form")
+            let PhoneNumberAddButton = document.querySelector("#add-form")
+            let TotalPhoneNumberForms = document.querySelector("#id_phone-TOTAL_FORMS")
+            let PhoneNumberFormNum = PhoneNumberForm.length-1
+            PhoneNumberAddButton.addEventListener('click', addPhoneNumberForm)
+
+            let locationForm = document.querySelectorAll(".location-form")
+            let locationAddButton = document.querySelector("#add-location-form")
+            let TotalLocationForms = document.querySelector("#id_location-TOTAL_FORMS")
+            let locationFormNum = locationForm.length-1
+            locationAddButton.addEventListener('click', addLocationForm)
+
+            function addPhoneNumberForm(e){
+            e.preventDefault()
+
+            let newForm = PhoneNumberForm[0].cloneNode(true)
+            let formRegex = RegExp(`phone-(\\d){1}-`,'g')
+
+            PhoneNumberFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `phone-${PhoneNumberFormNum}-`)
+            container.insertBefore(newForm, PhoneNumberAddButton)
+
+            TotalPhoneNumberForms.setAttribute('value', `${PhoneNumberFormNum+1}`)
+        }
+
+            function addLocationForm(e){
+            e.preventDefault()
+
+            let newForm = locationForm[0].cloneNode(true)
+            let formRegex = RegExp(`location-(\\d){1}-`,'g')
+
+            locationFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `location-${locationFormNum}-`)
+            container.insertBefore(newForm, locationAddButton)
+
+            TotalLocationForms.setAttribute('value', `${locationFormNum+1}`)
+        }
+
+            function addSkillForm(e){
+            e.preventDefault()
+
+            let newForm = skillForm[0].cloneNode(true)
+            let formRegex = RegExp(`skill-(\\d){1}-`,'g')
+
+            skillFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `skill-${skillFormNum}-`)
+            container.insertBefore(newForm, skillAddButton)
+
+            totalSkillForms.setAttribute('value', `${skillFormNum+1}`)
+        }
+
+
+
+
+
+
+            function addEducationForm(e){
+            e.preventDefault()
+
+            let newForm = educationForm[0].cloneNode(true)
+            let formRegex = RegExp(`education-(\\d){1}-`,'g')
+
+            educationFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `education-${educationFormNum}-`)
+            container.insertBefore(newForm, educationAddButton)
+
+            totalEducationForms.setAttribute('value', `${educationFormNum+1}`)
+            }
+
+
+            function addExperienceForm(e){
+            e.preventDefault()
+
+            let newForm = experienceForm[0].cloneNode(true)
+            let formRegex = RegExp(`experience-(\\d){1}-`,'g')
+
+            experienceFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `experience-${experienceFormNum}-`)
+            container.insertBefore(newForm, experienceAddButton)
+
+            totalExperienceForms.setAttribute('value', `${experienceFormNum+1}`)
+        }
+
+
+    </script>
+    </center>
+    </body>
+{% endblock content %}
+

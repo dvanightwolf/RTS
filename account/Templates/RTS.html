@@ -1,0 +1,72 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home</title>
+        <style>
+        </style>
+    </head>
+    <body>
+    <br><Br><Br>
+    <div class="float-container">
+        <div class="float-child">
+            <div class="card card-header text-white">
+                <h2><b>
+                    <center>Latest Job Posts</center>
+                </b></h2>
+            </div>
+            <div class="card-body">
+                {% for job in jobs %}
+                    <br>
+                    <div class="shadow-lg card"
+                         style="margin-left: 100px;margin-right: 100px;padding: 25px;border-radius: 20px">
+                        <img src="{{ job.author.photo.url }}" width="50px" height="50px"
+                             style="border-color:#1c87c9;border-radius:50%; display:inline-block">
+                        <a href="{{ job.author.get_user_id }}"><p style="display: inline-block">{{ job.author }}</p>
+                        </a>
+                        <a href="{{ job.get_absolute_url }}" style="display: inline-block">
+                            <h4>{{ job.heading }}</h4>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+        </div>
+    </div>
+    <br>
+    <div class="float-container">
+        <div class="float-child child">
+            <div class="card card-header text-white">
+                <h2><b>
+                    <center>Latest Trainings</center>
+                </b></h2>
+            </div>
+            <div class="card-body">
+                <div>
+                    {% for training in trainings %}
+                        <br>
+                        <div class="shadow-lg card"
+                             style="margin-left: 100px;margin-right: 100px;padding: 25px;border-radius: 20px">
+                            <img src="{{ training.author.photo.url }}" width="50px" height="50px"
+                                 style="border-color:#1c87c9;border-radius:50%; display:inline-block">
+                            <a href="{{ training.author.get_user_id }}"><p
+                                    style="display: inline-block">{{ training.author }}</p>
+                            </a>
+                            <a><h4><a href="{{ training.get_absolute_url }}">{{ training.title }}</a></h4></a>
+                            <p>
+                            <h4 class="font_style"><b class="style shadow-sm">description:</b></h4>
+                            <b style="font-size: 18px"> {{ training.description }}</b>
+                            </p>
+                            </p>
+                        </div>
+                        <br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
+{% endblock content %}

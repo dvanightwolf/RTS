@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DELETE CV</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+<form method="post" class="card box container shadow-lg col-lg-4">
+  {% csrf_token %}
+<div >
+<br>
+    {% if have_applies %}
+        <p>If you delete your CV you will lose all your applies, are you sure?</p>
+    {% else %}
+            <p>Are you sure you want to delete your CV?</p>
+    {% endif %}
+
+    <p><input class="btn btn-outline-primary wew" type="submit" value='Yes'/>
+        <a href="{% url 'cv:cv_show' %}"><input class="btn btn-outline-primary wew" type="button" value="Cancel"></a></p>
+
+</div>
+</form>
+</body>
+</html>
+{% endblock content %}

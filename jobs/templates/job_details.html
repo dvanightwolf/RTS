@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ job.heading}}</title>
+      <style>
+
+      html, body {
+      min-height: 100%;
+      }
+      body, div, form {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 22px;
+      }
+      h1, h4 {
+      margin: 15px 0 4px;
+      }
+      h1 {
+      font-weight: 400;
+      }
+
+      form {
+      text-align: left;
+      width: 50%;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 2px 5px #ccc;
+      }
+      select{
+          max-width: 100px;
+      }
+      input {
+
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      vertical-align: middle;
+      }
+      input:hover {
+      border: 1px solid #1c87c9;
+      }
+      table {
+      width: 100%;
+      }
+      h4 {
+      padding: 15px 0 5px;
+      }
+      .question-answer label {
+      display: inline-block;
+      padding: 0 20px 15px 0;
+      }
+      .question-answer input {
+      width: auto;
+      }
+      textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+    }
+      th, td {
+      width: 17%;
+      padding: 15px 0;
+      text-align: center;
+      vertical-align: unset;
+      line-height: 18px;
+      font-weight: 400;
+      word-break: break-all;
+      border-bottom: 1px solid #095484;
+      color: #095484;
+      }
+
+
+
+      button {
+      width: auto;
+      padding: 10px;
+      border: none;
+      text-align: center;
+      border-radius: 5px;
+      background-color: #095484;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      }
+      button:hover {
+      background-color: #0666a3;
+      }
+    label
+    {
+        color: darkcyan;
+    }
+          .modal {
+    text-align: center;
+    padding: 0 !important;
+}
+    </style>
+
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+<center>
+       <div class="card shadow-lg" style="text-align:left;padding: 50px;margin: 100px " id="two">
+      <time style="align-self: end;"> <o style="color: #0666a3">created:</o>{{ job.created }}/
+       {% if job.updated != job.created %}
+       <o style="color: #0666a3;" >updated:</o>{{ job.updated }}
+        {% endif %}
+      </time>
+           <h3 style="color: #1c87c9" >{{ job.heading }}</h3>
+       <a href="{{ job.author.get_user_id }}"> <p style="color: #0666a3">by: {{ job.author }}</p></a>
+       <br>
+           <br>
+           <h4><sup>Tags:</sup>
+        {% for tag in job.tags.all %}
+           <button style="border-radius: 100px; position: relative; bottom: 9px ">{{ tag.name }}</button></a>
+            {% endfor %}
+        </h4>
+
+           <h6> </h6>
+
+        <h4><h5>Description:</h5> {{ job.description }}</h4>
+
+       <hr>
+
+           <h5>Categories: <button style="border-radius: 100px; ">{{job.category}}</button></h5>
+           <h5>Required Gender:{{ job.gender }}</h5>
+           <h5>JopType: {{ job.job_type }}</h5>
+           <h5>Salary: {{ job.salary }}</h5>
+       <hr>
+        <h5 style="color: #1c87c9">EXPERIENCES</h5>
+        {% for ex in experiences %}
+        <h6>{{ ex.experience }}</h6>
+        {% endfor %}
+        <h5 style="color: #1c87c9">EDUCATION</h5>
+        {%for ed in educations  %}
+        <h6>{{ed.education}}</h6>
+        {% endfor %}
+        <h5 style="color: #1c87c9">Skill</h5>
+        {% for sk in skills %}
+        <h6>{{sk.skill}}</h6>
+        {% endfor %}
+        <h5 style="color: #1c87c9">location</h5>
+        {%for lo in locations %}
+        <h6>{{lo.country.country}}</h6>
+        {% endfor %}
+       <h5 style="color: #1c87c9">Email</h5>
+       <h6>{{ job.email }}</h6>
+        <h5 style="color: #1c87c9">PhoneNumbers</h5>
+        {% for PH in phone_numbers %}
+        <h6>{{ PH.phone_number }}</h6>
+        {% endfor %}
+
+<div>
+{% if same_user %}
+<a href="{{job.edit_url}}"><button>Edit</button></a>
+<a href="{{ job.delete_url}}"><button>Delete</button></a>
+        <a href="{{ job.applies_url }}"><button>Show applies</button></a>
+{% endif %}
+{% if can_apply and same_user == False %}
+    <a href="{{ job.apply_url }}"> <button>Apply job</button></a>
+{% endif %}
+</div>
+       </div>
+
+</center>
+
+</body>
+</html>
+{% endblock content %}

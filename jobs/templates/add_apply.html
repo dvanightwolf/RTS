@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add apply</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+<form method="post" class="card shadow-lg container" style="padding: 20px; width: 50%">
+{% csrf_token %}
+    <p>apply info will be taken from your CV.</p>
+    <br>
+{{ apply_form.as_p }}
+<a href="{% url 'jobs:post_list' %}" style="align-self: end"><button class=" btn btn-block btn-primary" type="submit">Apply</button></a>
+
+</form>
+</body>
+</html>
+{% endblock content %}

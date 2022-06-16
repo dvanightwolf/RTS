@@ -1,0 +1,13 @@
+---------------------------------
+admin account =>
+username: talon
+password: 123
+---------------------------------
+employee account =>
+username: irelia
+password: 12345678Aa@
+---------------------------------
+employee account =>
+username: zed
+password: 12345678Aa@
+---------------------------------

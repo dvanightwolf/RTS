@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- Add meta tags for mobile and IE -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <title> PayPal Checkout </title>
+    </head>
+
+    <body>
+    <br>
+    <br>
+    <br>
+        <div class="flex-row flex-wrap align-items-start ">
+            <div class="card profile-card card-header text-white m-2 shadow-lg">
+                <h2>
+                    <center>Become a Trainer</center>
+                </h2>
+                <div class="card-body">
+                    <center>
+                        <p><h6>You Will be able to use training page and download cv templates </h6></p>
+                        <p>what are you waiting? Buy it Now!</p>
+                        <p>for only 10$</p>
+                        <div id="paypal-button-container"></div>
+                    </center>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AQbXKgJDo3IwbjEs_nhC_7_KvKBolRoPqpsD6UxolgfFNo5xXJv9j96WtRNMM3u87NmX6TLvEDNJG5A9&currency=USD&disable-funding=sofort,card,credit,venmo,ideal,sepa,bancontact,eps,giropay,mercadopago,mybank,p24"></script>
+
+    <script>
+        paypal.Buttons({
+            style: {
+                color: 'blue',
+                shape: 'rect',
+            },
+
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '10.00'
+                        }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+
+                return actions.order.capture().then(function (orderData) {
+                    window.location.href = "{% url 'training:complete' %}";
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+    </body>
+
+    </html>
+{% endblock content %}

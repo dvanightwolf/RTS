@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DELETE Job</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+<form method="post">
+  {% csrf_token %}
+    are you sure you want to delete your post?
+    <p><input type="submit" value='Yes'/>
+        <a href="{{ job_to_delete.get_absolute_url }}"><input type="button" value="Cancel"></a></p>
+</form>
+</body>
+</html>
+{% endblock content %}

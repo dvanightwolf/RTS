@@ -1,0 +1,48 @@
+{% include 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Applies</title>
+
+</head>
+    <br>
+    <br>
+    <br>
+{% if count != 0 %}
+    <h3 style="color: red; align-self: center">Total applies is {{ count.real }}</h3>
+    <hr>
+{% for cv in cvs %}
+<div class="card box container  border-top shadow-lg " style="align-self: center; width: 50%; height: 270px">
+<br>
+                    <div >
+                         <a href="{{ cv.picture.url }}" >
+                             <img src="{{ cv.picture.url }}" height="90px" width="90px" style="border-radius: 2%">
+                         </a>
+                    </div>
+                       <a href="{{ cv.user.get_user_id }}"> <h2>{{ cv.first_name }} {{ cv.last_name }}</h2></a>
+                        <h6>Gender: {{ cv.gender }}</h6>
+<h5 style="color: red">Email</h5>
+<h6>{{ cv.email }}</h6>
+    {% for apply in applies %}
+        {% if apply.user == cv.user %}
+    <div style="align-self: end">
+<a href="{{ apply.get_absolute_url }}">
+        <input type="button" value="Details" class=" btn  btn-primary" style="position: relative; bottom: 30px;">
+    </a>
+    </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+<br>
+{% endfor %}
+{% else %}
+<h2>there is no apply to show!</h2>
+{% endif %}
+
+<br>
+<br>
+</body>
+</html>
+{% endblock content %}

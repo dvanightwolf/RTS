@@ -1,0 +1,188 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+    <html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>YOUR CV</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <link href="bootstrap.css">
+        <style>
+            .box{
+                border: 4px solid #000000;
+                margin: 0 auto;
+                }
+            h3{
+                color: black;
+            }
+            /* Popup box BEGIN */
+.hover_bkgr_fricc{
+    background:rgba(0,0,0,.4);
+    cursor:pointer;
+    display:none;
+    height:100%;
+    position:fixed;
+    text-align:center;
+    top:0;
+    left: 0px;
+    width:100%;
+    z-index:10000;
+}
+.hover_bkgr_fricc .helper{
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+.hover_bkgr_fricc > div {
+    background-color: #fff;
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 551px;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 60%;
+    position: relative;
+    border-radius: 8px;
+    padding: 15px 5%;
+}
+.popupCloseButton {
+    background-color: #fff;
+    border: 3px solid #999;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: arial;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 25px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+.popupCloseButton:hover {
+    background-color: #ccc;
+}
+.trigger_popup_fricc {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 20px;
+    display: inline-block;
+    font-weight: bold;
+}
+/* Popup box BEGIN */
+        </style>
+    </head>
+    <body>
+        <br>
+    <br>
+    <br>
+                <div class="card container shadow-lg" style="align-self: center; border-radius: 2%" >
+                <div class="row" style="padding: 20px">
+                <div class="col-lg-6 col-md-6 col-sm-6 kill left">
+                    <br>
+
+                    <div style="margin-top:-15px ">
+                        {% if image %}
+                         <a href="{{ image.url }}" >
+                             <img src="{{ image.url }}" height="180px" width="180px" style="border-radius: 2%">
+                         </a>
+                        {% endif %}
+                    </div>
+
+                        <br>
+                        <h1>{{ cv.first_name }} {{ cv.last_name }}</h1>
+                        <br>
+
+                        <h3 style="color: red">EMAIL</h3>
+                        <div class="text default" style="display: inline-block">
+                        <a href="http://{{ cv.email }}" ><p style="font-size: larger">{{ cv.email }}</p></a>
+                        </div >
+                        <br>
+                        <h6 style="color: red">Gender: {{ cv.gender }}</h6>
+                        <br>
+
+                        <h3 style="color: red">EXPERIENCES</h3>
+                        {% for ex in experiences %}
+                            <p>{{ ex.experience }}: <p style="color: #ff0000">{{ ex.start }} to {{ ex.end }}</p></p>
+
+                        {% endfor %}
+                        <br>
+                        <h3 style="color: red">EDUCATIONS</h3>
+                        {% for ed in educations %}
+                            <h6>{{ed.education}}: {{ ed.date }}</h6>
+                        {% endfor %}
+                        <br>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 kill right" style="border-left:0.5px solid red;">
+                        <h3 style="color: red">Skills</h3>
+                        {% for sk in skills %}
+                            <h6>{{ sk.skill }} : {{ sk.grade }}</h6>
+                        {% endfor %}
+                        <br>
+
+                        <h4 style="color: red">Location</h4>
+                        {% for l in locations %}
+                            <h6>{{ l.country }}</h6>
+                        {% endfor %}
+                        <br>
+                        <h3 style="color: #ff0000">Interests</h3>
+                        <p>{{ cv.interests }}</p>
+
+                        <hr>
+                            <p style="color: red">Phone Numbers</p>
+                        {% for p in phone_number %}
+                            <p>{{ p.phone_number }}</p>
+                        {% endfor %}
+                        <hr>
+                        <h7>Created in {{ cv.created }}</h7>
+                <br>
+
+                        {% if cv.updated != cv.created %}
+                            <h7 style="color: #007f00">Updated in {{ cv.updated }} </h7>
+                        {% endif %}
+
+                <br>
+                </div>
+                </div>
+                <div style="align-self: end">
+                    <form action="{{ cv.get_url }}" method="get" style="align-self: end">
+                        {% if request.user.is_trainer %}
+                    <select name="color" id="color">
+                        <option value="blue">blue</option>
+                        <option value="green">green</option>
+                        <option value="maroon">maroon</option>
+                        <option value="steelblue">steelblue</option>
+                        <option value="violet">violet</option>
+                    </select>
+
+<button type="submit" class="btn btn-primary">Preview</button>
+
+
+
+<a href="{% url 'generics:ppdf' %}"> <input type="button" class=" btn btn-primary" value="Download As PDF" ></a>
+                            {% else %}
+                            <a href="{% url 'training:payment' %}">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" style="margin-left: 10px">Become
+                        A trainer
+                    </button>
+                </a>
+                        {% endif %}
+
+                        <a href="{% url 'cv:edit' %}"><input class="btn btn-primary" style="max-width: 55px" value="Edit"></a>
+                        <a href="{% url 'cv:delete_cv' %}">
+                                <input type="button" value="Delete" class=" btn  btn-primary">
+                            </a>
+                        </form>
+
+
+
+                        </div>
+                <br>
+                </div>
+<br>
+<br>
+</body>
+</html>
+{% endblock content %}

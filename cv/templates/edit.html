@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+    <title>Update CV</title>
+  <style>
+        form{
+            border:4px solid black;
+            margin: 0 auto;
+            padding: 40px;
+            width: fit-content;
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+<form id="form-container" method="POST" class="card shadow-lg container" enctype="multipart/form-data" style="border-width: 0px">
+     {% csrf_token %}
+    <h3>personal information</h3>
+     {{ make_cv_form.as_p }}
+    <hr>
+    <h3>experiences</h3>
+        <p>____________</p>
+        {{ experience_formset.management_form }}
+        {% for form in experience_formset %}
+        <div class="experience-form">
+        {{form.as_p}}
+        <p>____________</p>
+            </div>
+        {% endfor %}
+    <button id="add-experience-form" class="btn btn-outline-primary col-3" type="button">Add experience</button>
+
+    <hr>
+    <h3>educations</h3>
+<p>____________</p>
+        {{ education_formset.management_form }}
+        {% for form in education_formset %}
+        <div class="education-form">
+        {{form.as_p}}
+        <p>____________</p>
+        </div>
+        {% endfor %}
+    <button id="add-education-form" class="btn btn-outline-primary col-3" type="button">Add education</button>
+
+    <hr>
+    <h3>skills</h3>
+<p>____________</p>
+        {{skill_formset.management_form}}
+
+        {% for form in skill_formset %}
+        <div class="skill-form">
+        {{form.as_p}}
+        <p>____________</p>
+        </div>
+        {% endfor %}
+
+    <button id="add-skill-form" class="btn btn-outline-primary col-3"  type="button">Add skill</button>
+
+    <hr>
+    <h3>location address</h3>
+<p>____________</p>
+{{ location_formset.management_form }}
+        {% for form in location_formset %}
+        <div class="location-form">
+        {{form.as_table}}
+        <p>____________</p>
+        </div>
+        {% endfor %}
+    <br>
+
+    <h3>Phone number</h3>
+<p>____________</p>
+        {{ phone_number_formset.management_form }}
+        {% for form in phone_number_formset %}
+        <div class="phone-number-form">
+        {{form.as_p}}
+        <p>____________</p>
+        </div>
+        {% endfor %}
+    <button id="add-phone-number-form" class="btn btn-outline-primary col-3" type="button">Add phone number</button>
+        <br>
+            <div style="align-self: end" class="col-4">
+            <a href="{% url 'cv:home' %}">
+                <button type="submit" class=" btn btn-block btn-primary col-5" style="align-self: end">Update</button>
+            </a>
+            </div>
+
+
+</div>
+</form>
+    <script>
+        let container = document.querySelector("#form-container")
+
+        let skillForm = document.querySelectorAll(".skill-form")
+        let skillAddButton = document.querySelector("#add-skill-form")
+        let totalSkillForms = document.querySelector("#id_skill-TOTAL_FORMS")
+        let skillFormNum = skillForm.length-1
+        skillAddButton.addEventListener('click', addSkillForm)
+
+        let educationForm = document.querySelectorAll(".education-form")
+        let educationAddButton = document.querySelector("#add-education-form")
+        let totalEducationForms = document.querySelector("#id_education-TOTAL_FORMS")
+        let educationFormNum = skillForm.length-1
+        educationAddButton.addEventListener('click', addEducationForm)
+
+        let experienceForm = document.querySelectorAll(".experience-form")
+        let experienceAddButton = document.querySelector("#add-experience-form")
+        let totalExperienceForms = document.querySelector("#id_experience-TOTAL_FORMS")
+        let experienceFormNum = experienceForm.length-1
+        experienceAddButton.addEventListener('click', addExperienceForm)
+
+        let phoneNumberForm = document.querySelectorAll(".phone-number-form")
+        let phoneNumberAddButton = document.querySelector("#add-phone-number-form")
+        let totalPhoneNumberForms = document.querySelector("#id_phone-number-TOTAL_FORMS")
+        let phoneNumberFormNum = phoneNumberForm.length-1
+        phoneNumberAddButton.addEventListener('click', addPhoneNumberForm)
+
+        let locationForm = document.querySelectorAll(".location-form")
+        let locationAddButton = document.querySelector("#add-location-form")
+        let totalLocationForms = document.querySelector("#id_location-TOTAL_FORMS")
+        let locationFormNum = locationForm.length-1
+        locationAddButton.addEventListener('click', addLocationForm)
+
+        function addEducationForm(e){
+            e.preventDefault()
+
+            let newForm = educationForm[0].cloneNode(true)
+            let formRegex = RegExp(`education-(\\d){1}-`,'g')
+
+            educationFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `education-${educationFormNum}-`)
+            container.insertBefore(newForm, educationAddButton)
+
+            totalEducationForms.setAttribute('value', `${educationFormNum+1}`)
+        }
+
+        function addSkillForm(e){
+            e.preventDefault()
+
+            let newForm = skillForm[0].cloneNode(true)
+            let formRegex = RegExp(`skill-(\\d){1}-`,'g')
+
+            skillFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `skill-${skillFormNum}-`)
+            container.insertBefore(newForm, skillAddButton)
+
+            totalSkillForms.setAttribute('value', `${skillFormNum+1}`)
+        }
+
+         function addExperienceForm(e){
+            e.preventDefault()
+
+            let newForm = experienceForm[0].cloneNode(true)
+            let formRegex = RegExp(`experience-(\\d){1}-`,'g')
+
+            experienceFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `experience-${experienceFormNum}-`)
+            container.insertBefore(newForm, experienceAddButton)
+
+            totalExperienceForms.setAttribute('value', `${experienceFormNum+1}`)
+        }
+        function addPhoneNumberForm(e){
+            e.preventDefault()
+
+            let newForm = phoneNumberForm[0].cloneNode(true)
+            let formRegex = RegExp(`phone-number-(\\d){1}-`,'g')
+
+            phoneNumberFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `phone-number-${phoneNumberFormNum}-`)
+            container.insertBefore(newForm, phoneNumberAddButton)
+
+            totalPhoneNumberForms.setAttribute('value', `${phoneNumberFormNum+1}`)
+        }
+        function addLocationForm(e){
+            e.preventDefault()
+
+            let newForm = locationForm[0].cloneNode(true)
+            let formRegex = RegExp(`location-(\\d){1}-`,'g')
+
+            locationFormNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `location-${locationFormNum}-`)
+            container.insertBefore(newForm, locationAddButton)
+
+            totalLocationForms.setAttribute('value', `${locationFormNum+1}`)
+        }
+    </script>
+<br>
+<br>
+</body>
+{% endblock content %}

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <style type="text/css">
+            .image-container {
+                max-width: 250px;
+                height: auto;
+            }
+
+            .field-heading {
+                color: blue;
+            }
+
+            .card {
+                border-radius: 12px;
+                background: #FFFFFF;
+            }
+
+        </style>
+        <meta charset="UTF-8">
+        <title>{{ profile.username }}' Profile</title>
+    </head>
+    <br>
+    <br>
+    <br>
+    <div class="container-fluid">
+        <div class="flex-row flex-wrap align-items-start">
+            <div class="card profile-card m-2">
+                <h2>
+                    <center>General information</center>
+                </h2>
+                <div class="card-body">
+                    <center>
+                        <div class="d-flex flex-column justify-content-center p-4">
+                            <div class="image-container mx-auto mb-4">
+                                <a href="{{ profile.photo.url }}">
+                                    <img src="{{ profile.photo.url }}" width="200px" height="200px"
+                                         style="border-radius: 50%">
+                                </a>
+                            </div>
+                            <p class="mt-4 mb-1 field-heading">Username</p>
+                            <h5>{{ profile.username }}</h5>
+                            <p class="mt-4 mb-1 field-heading">Email</p>
+                            <h5>{{ profile.email }}</h5>
+                            <p class="mt-4 mb-1 field-heading">Bio</p>
+                            <h5>{{ profile.bio }}</h5>
+                            <p class="mt-4 mb-1 field-heading">Phone Number</p>
+                            <h5>{{ profile.phone_number }}</h5>
+                                {% if profile.is_company %}
+                                    <p class="mt-4 mb-1 field-heading">Location</p>
+                                    <h5>{{ info.location }}</h5>
+                                    <p class="mt-4 mb-1 field-heading">Website</p>
+                                    <a href="{{ info.website }}" target="_blank">{{ info.website }}</a>
+                                {% endif %}
+                                {% if profile.is_employee %}
+                                    <p class="mt-4 mb-1 field-heading">Date of Birth</p>
+                                    <h5>{{ info.date_of_birth }}</h5>
+                                    <p class="mt-4 mb-1 field-heading">Gender</p>
+                                    <h5>{{ info.gender }}</h5>
+                                {% endif %}
+                                {% if profile.is_employee and request.user == profile %}
+                                    <a class="mt-4 btn btn-primary" href="{% url 'cv:home' %}">Your Cv</a>
+                                {% endif %}
+                        {% if request.user == profile %}
+                            <a class="mt-4 btn btn-primary" href="{% url 'account:profile_edit' %}">Edit Your
+                                information</a>
+                            <div class="d-flex flex-column mt-4">
+                                <a class="m-auto" href="{% url 'account:password_change' %}">Change password</a>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    {% if have_jobs %}
+        <div class="container-fluid">
+            <div class="flex-row flex-wrap align-items-start">
+                <div class="card profile-card m-2">
+                    <h2>
+                        <center>Your Job Posts</center>
+                    </h2>
+                    <div class="card-body">
+                        {% for job in jobs %}
+                            <div class="shadow_lg">
+                                <center>
+                                    <a href="{{ job.get_absolute_url }}"><h4>{{ job.heading }}</h4></a>
+                                    <h4><h5>Description:</h5> {{ job.description }}</h4>
+                                    <br><br>
+                                    </a>
+                                </center>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endif %}
+    {% if have_applies or have_jobs %}
+        {% if have_applies %}
+            <div class="container-fluid">
+                <div class="flex-row flex-wrap align-items-start">
+                    <div class="card profile-card m-2">
+                        <h2>
+                            <center>Your Applies</center>
+                        </h2>
+                        <div class="card-body">
+                            {% for apply in applies %}
+                                <div class="shadow_lg">
+                                    <center>
+                                        <h5>Title</h5>
+                                        <a href="{{ apply.get_job_url }}"><h4>{{ apply.job.heading }}</h4></a>
+                                        <br>
+                                        <a href="{{ apply.delete_url }}">
+                                            <button class=" btn btn-block btn-primary" style="align-self: end">Delete
+                                            </button>
+                                        </a>
+                                    </center>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    <br>
+    </body>
+    </html>
+{% endblock content %}
